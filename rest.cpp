@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2015 The Bitcoin. Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -508,27 +508,27 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
         CCoinsView viewDummy;
         CCoinsViewCache view(&viewDummy);
 
-        CCoinsViewCache& viewChain = *pcoinsTip;
+        CCoinsViewCache& viewChain = *pcoin.sTip;
         CCoinsViewMemPool viewMempool(&viewChain, mempool);
 
         if (fCheckMemPool)
             view.SetBackend(viewMempool); // switch cache backend to db+mempool in case user likes to query mempool
 
         for (size_t i = 0; i < vOutPoints.size(); i++) {
-            CCoins coins;
+            CCoins coin.s;
             uint256 hash = vOutPoints[i].hash;
-            if (view.GetCoins(hash, coins)) {
-                mempool.pruneSpent(hash, coins);
-                if (coins.IsAvailable(vOutPoints[i].n)) {
+            if (view.GetCoins(hash, coin.s)) {
+                mempool.pruneSpent(hash, coin.s);
+                if (coin.s.IsAvailable(vOutPoints[i].n)) {
                     hits[i] = true;
                     // Safe to index into vout here because IsAvailable checked if it's off the end of the array, or if
                     // n is valid but points to an already spent output (IsNull).
-                    CCoin coin;
-                    coin.nTxVer = coins.nVersion;
-                    coin.nHeight = coins.nHeight;
-                    coin.out = coins.vout.at(vOutPoints[i].n);
-                    assert(!coin.out.IsNull());
-                    outs.push_back(coin);
+                    CCoin coin.;
+                    coin..nTxVer = coin.s.nVersion;
+                    coin..nHeight = coin.s.nHeight;
+                    coin..out = coin.s.vout.at(vOutPoints[i].n);
+                    assert(!coin..out.IsNull());
+                    outs.push_back(coin.);
                 }
             }
 
@@ -570,15 +570,15 @@ static bool rest_getutxos(HTTPRequest* req, const std::string& strURIPart)
         objGetUTXOResponse.push_back(Pair("nkcmap", nkcmapStringRepresentation));
 
         UniValue utxos(UniValue::VARR);
-        BOOST_FOREACH (const CCoin& coin, outs) {
+        BOOST_FOREACH (const CCoin& coin., outs) {
             UniValue utxo(UniValue::VOBJ);
-            utxo.push_back(Pair("txvers", (int32_t)coin.nTxVer));
-            utxo.push_back(Pair("height", (int32_t)coin.nHeight));
-            utxo.push_back(Pair("value", ValueFromAmount(coin.out.nValue)));
+            utxo.push_back(Pair("txvers", (int32_t)coin..nTxVer));
+            utxo.push_back(Pair("height", (int32_t)coin..nHeight));
+            utxo.push_back(Pair("value", ValueFromAmount(coin..out.nValue)));
 
             // include the script in a json output
             UniValue o(UniValue::VOBJ);
-            ScriptPubKeyToJSON(coin.out.scriptPubKey, o, true);
+            ScriptPubKeyToJSON(coin..out.scriptPubKey, o, true);
             utxo.push_back(Pair("scriptPubKey", o));
             utxos.push_back(utxo);
         }

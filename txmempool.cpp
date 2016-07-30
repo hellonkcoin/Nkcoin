@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2015 The Bitcoin. Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -367,7 +367,7 @@ CTxMemPool::~CTxMemPool()
     delete minerPolicyEstimator;
 }
 
-void CTxMemPool::pruneSpent(const uint256 &hashTx, CCoins &coins)
+void CTxMemPool::pruneSpent(const uint256 &hashTx, CCoins &coin.s)
 {
     LOCK(cs);
 
@@ -375,7 +375,7 @@ void CTxMemPool::pruneSpent(const uint256 &hashTx, CCoins &coins)
 
     // iterate over all COutPoints in mapNextTx whose hash equals the provided hashTx
     while (it != mapNextTx.end() && it->first->hash == hashTx) {
-        coins.Spend(it->first->n); // and remove those outputs from coins
+        coin.s.Spend(it->first->n); // and remove those outputs from coin.s
         it++;
     }
 }
@@ -537,9 +537,9 @@ void CTxMemPool::removeRecursive(const CTransaction &origTx, std::list<CTransact
     }
 }
 
-void CTxMemPool::removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMemPoolHeight, int flags)
+void CTxMemPool::removeForReorg(const CCoinsViewCache *pcoin.s, unsigned int nMemPoolHeight, int flags)
 {
-    // Remove transactions spending a coinbase which are now immature and no-longer-final transactions
+    // Remove transactions spending a coin.base which are now immature and no-longer-final transactions
     LOCK(cs);
     list<CTransaction> transactionsToRemove;
     for (indexed_transaction_set::const_iterator it = mapTx.begin(); it != mapTx.end(); it++) {
@@ -555,9 +555,9 @@ void CTxMemPool::removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMem
                 indexed_transaction_set::const_iterator it2 = mapTx.find(txin.prevout.hash);
                 if (it2 != mapTx.end())
                     continue;
-                const CCoins *coins = pcoins->AccessCoins(txin.prevout.hash);
-		if (nCheckFrequency != 0) assert(coins);
-                if (!coins || (coins->IsCoinBase() && ((signed long)nMemPoolHeight) - coins->nHeight < COINBASE_MATURITY)) {
+                const CCoins *coin.s = pcoin.s->AccessCoins(txin.prevout.hash);
+		if (nCheckFrequency != 0) assert(coin.s);
+                if (!coin.s || (coin.s->IsCoinBase() && ((signed long)nMemPoolHeight) - coin.s->nHeight < COINBASE_MATURITY)) {
                     transactionsToRemove.push_back(tx);
                     break;
                 }
@@ -643,7 +643,7 @@ void CTxMemPool::clear()
     _clear();
 }
 
-void CTxMemPool::check(const CCoinsViewCache *pcoins) const
+void CTxMemPool::check(const CCoinsViewCache *pcoin.s) const
 {
     if (nCheckFrequency == 0)
         return;
@@ -656,7 +656,7 @@ void CTxMemPool::check(const CCoinsViewCache *pcoins) const
     uint64_t checkTotal = 0;
     uint64_t innerUsage = 0;
 
-    CCoinsViewCache mempoolDuplicate(const_cast<CCoinsViewCache*>(pcoins));
+    CCoinsViewCache mempoolDuplicate(const_cast<CCoinsViewCache*>(pcoin.s));
 
     LOCK(cs);
     list<const CTxMemPoolEntry*> waitingOnDependants;
@@ -674,7 +674,7 @@ void CTxMemPool::check(const CCoinsViewCache *pcoins) const
         int64_t parentSizes = 0;
         int64_t parentSigOpCost = 0;
         BOOST_FOREACH(const CTxIn &txin, tx.vin) {
-            // Check that every mempool transaction's inputs refer to available coins, or other mempool tx's.
+            // Check that every mempool transaction's inputs refer to available coin.s, or other mempool tx's.
             indexed_transaction_set::const_iterator it2 = mapTx.find(txin.prevout.hash);
             if (it2 != mapTx.end()) {
                 const CTransaction& tx2 = it2->GetTx();
@@ -685,8 +685,8 @@ void CTxMemPool::check(const CCoinsViewCache *pcoins) const
                     parentSigOpCost += it2->GetSigOpCost();
                 }
             } else {
-                const CCoins* coins = pcoins->AccessCoins(txin.prevout.hash);
-                assert(coins && coins->IsAvailable(txin.prevout.n));
+                const CCoins* coin.s = pcoin.s->AccessCoins(txin.prevout.hash);
+                assert(coin.s && coin.s->IsAvailable(txin.prevout.n));
             }
             // Check whether its inputs are marked in mapNextTx.
             auto it3 = mapNextTx.find(txin.prevout);
@@ -964,16 +964,16 @@ bool CTxMemPool::HasNoInputsOf(const CTransaction &tx) const
 
 CCoinsViewMemPool::CCoinsViewMemPool(CCoinsView* baseIn, const CTxMemPool& mempoolIn) : CCoinsViewBacked(baseIn), mempool(mempoolIn) { }
 
-bool CCoinsViewMemPool::GetCoins(const uint256 &txid, CCoins &coins) const {
+bool CCoinsViewMemPool::GetCoins(const uint256 &txid, CCoins &coin.s) const {
     // If an entry in the mempool exists, always return that one, as it's guaranteed to never
     // conflict with the underlying cache, and it cannot have pruned entries (as it contains full)
     // transactions. First checking the underlying cache risks returning a pruned entry instead.
     shared_ptr<const CTransaction> ptx = mempool.get(txid);
     if (ptx) {
-        coins = CCoins(*ptx, MEMPOOL_HEIGHT);
+        coin.s = CCoins(*ptx, MEMPOOL_HEIGHT);
         return true;
     }
-    return (base->GetCoins(txid, coins) && !coins.IsPruned());
+    return (base->GetCoins(txid, coin.s) && !coin.s.IsPruned());
 }
 
 bool CCoinsViewMemPool::HaveCoins(const uint256 &txid) const {

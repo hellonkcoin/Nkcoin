@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2014 The Bitcoin Core developers
+// Copyright (c) 2009-2014 The Bitcoin. Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -14,13 +14,13 @@
  *
  *  Contains the prevout's CTxOut being spent, and if this was the
  *  last output of the affected transaction, its metadata as well
- *  (coinbase or not, height, transaction version)
+ *  (coin.base or not, height, transaction version)
  */
 class CTxInUndo
 {
 public:
     CTxOut txout;         // the txout data before being spent
-    bool fCoinBase;       // if the outpoint was the last unspent: whether it belonged to a coinbase
+    bool fCoinBase;       // if the outpoint was the last unspent: whether it belonged to a coin.base
     unsigned int nHeight; // if the outpoint was the last unspent: its height
     int nVersion;         // if the outpoint was the last unspent: its version
 
@@ -72,7 +72,7 @@ public:
 class CBlockUndo
 {
 public:
-    std::vector<CTxUndo> vtxundo; // for all but the coinbase
+    std::vector<CTxUndo> vtxundo; // for all but the coin.base
 
     ADD_SERIALIZE_METHODS;
 

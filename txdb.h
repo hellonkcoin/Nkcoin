@@ -1,12 +1,12 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2015 The Bitcoin. Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #ifndef BITCOIN_TXDB_H
 #define BITCOIN_TXDB_H
 
-#include "coins.h"
+#include "coin.s.h"
 #include "dbwrapper.h"
 #include "chain.h"
 
@@ -31,9 +31,9 @@ static const int64_t nMinDbCache = 4;
 static const int64_t nMaxBlockDBCache = 2;
 //! Max memory allocated to block tree DB specific cache, if -txindex (MiB)
 // Unlike for the UTXO database, for the txindex scenario the leveldb cache make
-// a meaningful difference: https://github.com/nkccoin/nkccoin/pull/8273#issuecomment-229601991
+// a meaningful difference: https://github.com/nkccoin./nkccoin./pull/8273#issuecomment-229601991
 static const int64_t nMaxBlockDBAndTxIndexCache = 1024;
-//! Max memory allocated to coin DB specific cache (MiB)
+//! Max memory allocated to coin. DB specific cache (MiB)
 static const int64_t nMaxCoinsDBCache = 8;
 
 struct CDiskTxPos : public CDiskBlockPos
@@ -61,7 +61,7 @@ struct CDiskTxPos : public CDiskBlockPos
     }
 };
 
-/** CCoinsView backed by the coin database (chainstate/) */
+/** CCoinsView backed by the coin. database (chainstate/) */
 class CCoinsViewDB : public CCoinsView
 {
 protected:
@@ -69,7 +69,7 @@ protected:
 public:
     CCoinsViewDB(size_t nCacheSize, bool fMemory = false, bool fWipe = false);
 
-    bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    bool GetCoins(const uint256 &txid, CCoins &coin.s) const;
     bool HaveCoins(const uint256 &txid) const;
     uint256 GetBestBlock() const;
     bool BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock);
@@ -83,7 +83,7 @@ public:
     ~CCoinsViewDBCursor() {}
 
     bool GetKey(uint256 &key) const;
-    bool GetValue(CCoins &coins) const;
+    bool GetValue(CCoins &coin.s) const;
     unsigned int GetValueSize() const;
 
     bool Valid() const;

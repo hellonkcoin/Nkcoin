@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2015 The Bitcoin. Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -44,7 +44,7 @@ static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesi
  *
  * CBlock(hash=000000000019d6, ver=1, hashPrevBlock=00000000000000, hashMerkleRoot=4a5e1e, nTime=1231006505, nBits=1d00ffff, nNonce=2083236893, vtx=1)
  *   CTransaction(hash=4a5e1e, ver=1, vin.size=1, vout.size=1, nLockTime=0)
- *     CTxIn(COutPoint(000000, -1), coinbase 04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73)
+ *     CTxIn(COutPoint(000000, -1), coin.base 04ffff001d0104455468652054696d65732030332f4a616e2f32303039204368616e63656c6c6f72206f6e206272696e6b206f66207365636f6e64206261696c6f757420666f722062616e6b73)
  *     CTxOut(nValue=50.00000000, scriptPubKey=0x5F1DF16B2B704C8A578D0B)
  *   vMerkleTree: 4a5e1e
  */
@@ -114,12 +114,12 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f"));
         assert(genesis.hashMerkleRoot == uint256S("0x4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"));
 
-        vSeeds.push_back(CDNSSeedData("nkccoin.sipa.be", "seed.nkccoin.sipa.be", true)); // Pieter Wuille
+        vSeeds.push_back(CDNSSeedData("nkccoin..sipa.be", "seed.nkccoin..sipa.be", true)); // Pieter Wuille
         vSeeds.push_back(CDNSSeedData("bluematt.me", "dnsseed.bluematt.me")); // Matt Corallo
-        vSeeds.push_back(CDNSSeedData("dashjr.org", "dnsseed.nkccoin.dashjr.org")); // Luke Dashjr
-        vSeeds.push_back(CDNSSeedData("nkccoinstats.com", "seed.nkccoinstats.com")); // Christian Decker
+        vSeeds.push_back(CDNSSeedData("dashjr.org", "dnsseed.nkccoin..dashjr.org")); // Luke Dashjr
+        vSeeds.push_back(CDNSSeedData("nkccoin.stats.com", "seed.nkccoin.stats.com")); // Christian Decker
         vSeeds.push_back(CDNSSeedData("xf2.org", "nkcseed.xf2.org")); // Jeff Garzik
-        vSeeds.push_back(CDNSSeedData("nkccoin.jonasschnelli.ch", "seed.nkccoin.jonasschnelli.ch")); // Jonas Schnelli
+        vSeeds.push_back(CDNSSeedData("nkccoin..jonasschnelli.ch", "seed.nkccoin..jonasschnelli.ch")); // Jonas Schnelli
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
@@ -208,10 +208,10 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicenkcs filtering should be at the top
-        vSeeds.push_back(CDNSSeedData("testnetnkccoin.jonasschnelli.ch", "testnet-seed.nkccoin.jonasschnelli.ch", true));
+        vSeeds.push_back(CDNSSeedData("testnetnkccoin..jonasschnelli.ch", "testnet-seed.nkccoin..jonasschnelli.ch", true));
         vSeeds.push_back(CDNSSeedData("petertodd.org", "seed.tbtc.petertodd.org", true));
         vSeeds.push_back(CDNSSeedData("bluematt.me", "testnet-seed.bluematt.me"));
-        vSeeds.push_back(CDNSSeedData("nkccoin.schildbach.de", "testnet-seed.nkccoin.schildbach.de"));
+        vSeeds.push_back(CDNSSeedData("nkccoin..schildbach.de", "testnet-seed.nkccoin..schildbach.de"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);

@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2015 The Bitcoin. Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -31,8 +31,8 @@ CCoinsViewDB::CCoinsViewDB(size_t nCacheSize, bool fMemory, bool fWipe) : db(Get
 {
 }
 
-bool CCoinsViewDB::GetCoins(const uint256 &txid, CCoins &coins) const {
-    return db.Read(make_pair(DB_COINS, txid), coins);
+bool CCoinsViewDB::GetCoins(const uint256 &txid, CCoins &coin.s) const {
+    return db.Read(make_pair(DB_COINS, txid), coin.s);
 }
 
 bool CCoinsViewDB::HaveCoins(const uint256 &txid) const {
@@ -52,10 +52,10 @@ bool CCoinsViewDB::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock) {
     size_t changed = 0;
     for (CCoinsMap::iterator it = mapCoins.begin(); it != mapCoins.end();) {
         if (it->second.flags & CCoinsCacheEntry::DIRTY) {
-            if (it->second.coins.IsPruned())
+            if (it->second.coin.s.IsPruned())
                 batch.Erase(make_pair(DB_COINS, it->first));
             else
-                batch.Write(make_pair(DB_COINS, it->first), it->second.coins);
+                batch.Write(make_pair(DB_COINS, it->first), it->second.coin.s);
             changed++;
         }
         count++;
@@ -65,7 +65,7 @@ bool CCoinsViewDB::BatchWrite(CCoinsMap &mapCoins, const uint256 &hashBlock) {
     if (!hashBlock.IsNull())
         batch.Write(DB_BEST_BLOCK, hashBlock);
 
-    LogPrint("coindb", "Committing %u changed transactions (out of %u) to coin database...\n", (unsigned int)changed, (unsigned int)count);
+    LogPrint("coin.db", "Committing %u changed transactions (out of %u) to coin. database...\n", (unsigned int)changed, (unsigned int)count);
     return db.WriteBatch(batch);
 }
 
@@ -114,9 +114,9 @@ bool CCoinsViewDBCursor::GetKey(uint256 &key) const
     return false;
 }
 
-bool CCoinsViewDBCursor::GetValue(CCoins &coins) const
+bool CCoinsViewDBCursor::GetValue(CCoins &coin.s) const
 {
-    return pcursor->GetValue(coins);
+    return pcursor->GetValue(coin.s);
 }
 
 unsigned int CCoinsViewDBCursor::GetValueSize() const

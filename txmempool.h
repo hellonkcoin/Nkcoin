@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2015 The Bitcoin. Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -11,7 +11,7 @@
 #include <set>
 
 #include "amount.h"
-#include "coins.h"
+#include "coin.s.h"
 #include "indirectmap.h"
 #include "primitives/transaction.h"
 #include "sync.h"
@@ -31,7 +31,7 @@ inline double AllowFreeThreshold()
 
 inline bool AllowFree(double dPriority)
 {
-    // Large (in bytes) low-priority (new, small-coin) transactions
+    // Large (in bytes) low-priority (new, small-coin.) transactions
     // need a fee.
     return dPriority > AllowFreeThreshold();
 }
@@ -86,7 +86,7 @@ private:
     unsigned int entryHeight;  //!< Chain height when entering the mempool
     bool hadNoDependencies;    //!< Not dependent on any other txs when it entered the mempool
     CAmount inChainInputValue; //!< Sum of all txin values that are already in blockchain
-    bool spendsCoinbase;       //!< keep track of transactions that spend a coinbase
+    bool spendsCoinbase;       //!< keep track of transactions that spend a coin.base
     int64_t sigOpCost;         //!< Total sigop cost
     int64_t feeDelta;          //!< Used for determining the priority of the transaction for mining in a block
     LockPoints lockPoints;     //!< Track the height and time at which tx was final
@@ -507,7 +507,7 @@ public:
      * all inputs are in the mapNextTx array). If sanity-checking is turned off,
      * check does nothing.
      */
-    void check(const CCoinsViewCache *pcoins) const;
+    void check(const CCoinsViewCache *pcoin.s) const;
     void setSanityCheck(double dFrequency = 1.0) { nCheckFrequency = dFrequency * 4294967295.0; }
 
     // addUnchecked must updated state for all ancestors of a given transaction,
@@ -518,7 +518,7 @@ public:
     bool addUnchecked(const uint256& hash, const CTxMemPoolEntry &entry, setEntries &setAncestors, bool fCurrentEstimate = true);
 
     void removeRecursive(const CTransaction &tx, std::list<CTransaction>& removed);
-    void removeForReorg(const CCoinsViewCache *pcoins, unsigned int nMemPoolHeight, int flags);
+    void removeForReorg(const CCoinsViewCache *pcoin.s, unsigned int nMemPoolHeight, int flags);
     void removeConflicts(const CTransaction &tx, std::list<CTransaction>& removed);
     void removeForBlock(const std::vector<CTransaction>& vtx, unsigned int nBlockHeight,
                         std::list<CTransaction>& conflicts, bool fCurrentEstimate = true);
@@ -526,7 +526,7 @@ public:
     void _clear(); //lock free
     bool CompareDepthAndScore(const uint256& hasha, const uint256& hashb);
     void queryHashes(std::vector<uint256>& vtxid);
-    void pruneSpent(const uint256& hash, CCoins &coins);
+    void pruneSpent(const uint256& hash, CCoins &coin.s);
     unsigned int GetTransactionsUpdated() const;
     void AddTransactionsUpdated(unsigned int n);
     /**
@@ -691,11 +691,11 @@ protected:
 
 public:
     CCoinsViewMemPool(CCoinsView* baseIn, const CTxMemPool& mempoolIn);
-    bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    bool GetCoins(const uint256 &txid, CCoins &coin.s) const;
     bool HaveCoins(const uint256 &txid) const;
 };
 
-// We want to sort transactions by coin age priority
+// We want to sort transactions by coin. age priority
 typedef std::pair<double, CTxMemPool::txiter> TxCoinAgePriority;
 
 struct TxCoinAgePriorityCompare

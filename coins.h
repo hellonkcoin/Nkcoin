@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The Bitcoin Core developers
+// Copyright (c) 2009-2015 The Bitcoin. Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -58,7 +58,7 @@
  *  version  code  unspentness       vout[4]                                                     vout[16]           height
  *
  *  - version = 1
- *  - code = 9 (coinbase, neither vout[0] or vout[1] are unspent,
+ *  - code = 9 (coin.base, neither vout[0] or vout[1] are unspent,
  *                2 (1, +1 because both nkc 1 and nkc 2 are unset) non-zero nkcvector bytes follow)
  *  - unspentness nkcvector: nkcs 2 (0x04) and 14 (0x4000) are set, so vout[2+2] and vout[14+2] are unspent
  *  - vout[4]: 86ef97d5790061b01caab50f1b8e9c50a5057eb43c2d9563a4ee
@@ -74,7 +74,7 @@
 class CCoins
 {
 public:
-    //! whether transaction is a coinbase
+    //! whether transaction is a coin.base
     bool fCoinBase;
 
     //! unspent transaction outputs; spent outputs are .IsNull(); spent outputs at the end of the array are dropped
@@ -201,7 +201,7 @@ public:
             if (!vout[i].IsNull())
                 ::Serialize(s, CTxOutCompressor(REF(vout[i])), nType, nVersion);
         }
-        // coinbase height
+        // coin.base height
         ::Serialize(s, VARINT(nHeight), nType, nVersion);
     }
 
@@ -234,7 +234,7 @@ public:
             if (vAvail[i])
                 ::Unserialize(s, REF(CTxOutCompressor(vout[i])), nType, nVersion);
         }
-        // coinbase height
+        // coin.base height
         ::Unserialize(s, VARINT(nHeight), nType, nVersion);
         Cleanup();
     }
@@ -286,7 +286,7 @@ public:
 
 struct CCoinsCacheEntry
 {
-    CCoins coins; // The actual cached data.
+    CCoins coin.s; // The actual cached data.
     unsigned char flags;
 
     enum Flags {
@@ -294,7 +294,7 @@ struct CCoinsCacheEntry
         FRESH = (1 << 1), // The parent view does not have this entry (or it is pruned).
     };
 
-    CCoinsCacheEntry() : coins(), flags(0) {}
+    CCoinsCacheEntry() : coin.s(), flags(0) {}
 };
 
 typedef boost::unordered_map<uint256, CCoinsCacheEntry, SaltedTxidHasher> CCoinsMap;
@@ -307,7 +307,7 @@ public:
     virtual ~CCoinsViewCursor();
 
     virtual bool GetKey(uint256 &key) const = 0;
-    virtual bool GetValue(CCoins &coins) const = 0;
+    virtual bool GetValue(CCoins &coin.s) const = 0;
     /* Don't care about GetKeySize here */
     virtual unsigned int GetValueSize() const = 0;
 
@@ -325,7 +325,7 @@ class CCoinsView
 {
 public:
     //! Retrieve the CCoins (unspent transaction outputs) for a given txid
-    virtual bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    virtual bool GetCoins(const uint256 &txid, CCoins &coin.s) const;
 
     //! Just check whether we have data for a given txid.
     //! This may (but cannot always) return true for fully spent transactions
@@ -354,7 +354,7 @@ protected:
 
 public:
     CCoinsViewBacked(CCoinsView *viewIn);
-    bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    bool GetCoins(const uint256 &txid, CCoins &coin.s) const;
     bool HaveCoins(const uint256 &txid) const;
     uint256 GetBestBlock() const;
     void SetBackend(CCoinsView &viewIn);
@@ -379,8 +379,8 @@ private:
     CCoinsModifier(CCoinsViewCache& cache_, CCoinsMap::iterator it_, size_t usage);
 
 public:
-    CCoins* operator->() { return &it->second.coins; }
-    CCoins& operator*() { return it->second.coins; }
+    CCoins* operator->() { return &it->second.coin.s; }
+    CCoins& operator*() { return it->second.coin.s; }
     ~CCoinsModifier();
     friend class CCoinsViewCache;
 };
@@ -408,7 +408,7 @@ public:
     ~CCoinsViewCache();
 
     // Standard CCoinsView methods
-    bool GetCoins(const uint256 &txid, CCoins &coins) const;
+    bool GetCoins(const uint256 &txid, CCoins &coin.s) const;
     bool HaveCoins(const uint256 &txid) const;
     uint256 GetBestBlock() const;
     void SetBestBlock(const uint256 &hashBlock);
@@ -438,13 +438,13 @@ public:
     /**
      * Return a modifiable reference to a CCoins. Assumes that no entry with the given
      * txid exists and creates a new one. This saves a database access in the case where
-     * the coins were to be wiped out by FromTx anyway.  This should not be called with
-     * the 2 historical coinbase duplicate pairs because the new coins are marked fresh, and
-     * in the event the duplicate coinbase was spent before a flush, the now pruned coins
-     * would not properly overwrite the first coinbase of the pair. Simultaneous modifications
+     * the coin.s were to be wiped out by FromTx anyway.  This should not be called with
+     * the 2 historical coin.base duplicate pairs because the new coin.s are marked fresh, and
+     * in the event the duplicate coin.base was spent before a flush, the now pruned coin.s
+     * would not properly overwrite the first coin.base of the pair. Simultaneous modifications
      * are not allowed.
      */
-    CCoinsModifier ModifyNewCoins(const uint256 &txid, bool coinbase);
+    CCoinsModifier ModifyNewCoins(const uint256 &txid, bool coin.base);
 
     /**
      * Push the modifications applied to this cache to its base.
@@ -466,7 +466,7 @@ public:
     size_t DynamicMemoryUsage() const;
 
     /** 
-     * Amount of nkccoins coming in to a transaction
+     * Amount of nkccoin.s coming in to a transaction
      * Note that lightweight clients may not know anything besides the hash of previous transactions,
      * so may not be able to calculate this.
      *
